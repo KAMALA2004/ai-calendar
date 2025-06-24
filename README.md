@@ -31,4 +31,3 @@ AI-powered dashboard that connects with Google Calendar, summarizes events, and 
 * Stored in a PostgreSQL table with pgvector for similarity search
 * Backend exposes routes to store and query embeddings
 
-Built with ❤️ by \[Your Name] for \[Hackathon or Program Name]
