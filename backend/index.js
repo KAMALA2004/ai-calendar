@@ -27,7 +27,7 @@ app.get("/auth/google", (req, res) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: "offline",
     scope: SCOPES,
-    prompt: "consent", // ensure fresh token
+    prompt: "consent", // force refresh
   });
   console.log("Redirecting to:", authUrl);
   res.redirect(authUrl);
@@ -54,26 +54,27 @@ app.get("/auth/google/callback", async (req, res) => {
     });
 
     const events = eventsRes.data.items.map((event) => ({
-      title: event.summary || "No Title",
-      description: event.description || "No Description",
+      title: event.summary || "Untitled Event",
+      description: event.description?.trim() || "",
       time: event.start.dateTime || event.start.date,
     }));
 
     const formattedEvents = events
-      .map(
-        (e, i) =>
-          `${i + 1}. Title: ${e.title}\n   Description: ${e.description}\n   Time: ${e.time}`
-      )
+      .map((e, i) => {
+        let desc = e.description ? `Description: ${e.description}\n   ` : "";
+        return `${i + 1}. Title: ${e.title}\n   ${desc}Time: ${e.time}`;
+      })
       .join("\n");
 
     const promptMessages = [
       {
         role: "system",
-        content: "You are a helpful assistant. Summarize upcoming calendar events concisely in natural language.",
+        content: `You are a professional executive assistant tasked with summarizing calendar events for busy business leaders. 
+Your tone is polished, concise, and clear. Only include event descriptions if they add useful context. Summarize the weekly schedule in paragraph form (not bullets), including all meeting titles, dates, times, and purposes. If a meeting has no meaningful description, simply mention the meeting title, date, and time.`,
       },
       {
         role: "user",
-        content: `Here are some upcoming events:\n${formattedEvents}\n\nGive me a short overview as if you're summarizing this person's week.`,
+        content: `Here are this week's calendar events:\n\n${formattedEvents}\n\nPlease provide a professional summary of this week's meeting schedule.`,
       },
     ];
 
@@ -95,11 +96,11 @@ app.get("/auth/google/callback", async (req, res) => {
 
     const summary = response.data.choices[0].message.content;
 
-    // Encode events data to safely pass via query param
+    // Encode events and summary
     const eventsBase64 = Buffer.from(JSON.stringify(events)).toString("base64");
     const summaryEncoded = encodeURIComponent(summary);
 
-    // Redirect back to React frontend with data
+    // Redirect back to frontend
     res.redirect(`http://localhost:3000/?summary=${summaryEncoded}&events=${eventsBase64}`);
   } catch (err) {
     console.error("🔴 Full Error:");
@@ -114,7 +115,6 @@ app.get("/auth/google/callback", async (req, res) => {
   }
 });
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`🚀 Server running at http://localhost:${PORT}`)
