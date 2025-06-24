@@ -1,0 +1,201 @@
+/* src/pages/Signup.css */
+.auth-container {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-xxl) var(--spacing-xxl);
+  background: var(--white);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--secondary-color), var(--accent-color), var(--info-color));
+  z-index: 2;
+}
+
+.auth-container h2 {
+  color: var(--secondary-color);
+  font-size: var(--font-size-xxl);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  font-weight: 700;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.auth-container input {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  transition: var(--transition-fast);
+  background-color: var(--light-color);
+  width: 100%;
+}
+
+.auth-container input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 3px var(--secondary-light);
+  background-color: var(--white);
+}
+
+.password-strength {
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  margin-top: -8px;
+  margin-bottom: var(--spacing-sm);
+  overflow: hidden;
+}
+
+.password-strength::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--error-color);
+  transition: var(--transition-normal);
+}
+
+.password-strength.weak::after {
+  width: 33%;
+  background: var(--error-color);
+}
+
+.password-strength.medium::after {
+  width: 66%;
+  background: var(--warning-color);
+}
+
+.password-strength.strong::after {
+  width: 100%;
+  background: var(--success-color);
+}
+
+.auth-container button {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  margin-top: var(--spacing-sm);
+}
+
+.auth-container button:hover {
+  background-color: #00A884;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-container button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-container p {
+  color: var(--text-light);
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.auth-container a {
+  color: var(--info-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.auth-container a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+/* Error message styling */
+.auth-container p[style*="color: red"] {
+  color: var(--error-color) !important;
+  background-color: var(--warning-light);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  text-align: center;
+  margin-top: var(--spacing-md);
+  border-left: 3px solid var(--error-color);
+}
+
+/* Background styling */
+.signup-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--secondary-light) 0%, var(--accent-light) 100%);
+  padding: var(--spacing-lg);
+}
+
+/* Decorative elements */
+.auth-decoration {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: var(--border-radius-round);
+  z-index: -1;
+}
+
+.decoration-1 {
+  top: -60px;
+  right: -60px;
+  background: var(--accent-light);
+}
+
+.decoration-2 {
+  bottom: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: var(--info-light);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .auth-container {
+    padding: var(--spacing-xl) var(--spacing-lg);
+    max-width: 90%;
+  }
+  
+  .auth-decoration {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .decoration-1 {
+    top: -40px;
+    right: -40px;
+  }
+  
+  .decoration-2 {
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+  }
+}
