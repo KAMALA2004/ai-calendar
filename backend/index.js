@@ -94,11 +94,11 @@ Your tone is polished, concise, and clear. Only include event descriptions if th
     );
 
     const summary = response.data.choices[0].message.content;
-
     const eventsBase64 = Buffer.from(JSON.stringify(events)).toString("base64");
     const summaryEncoded = encodeURIComponent(summary);
 
-    res.redirect(`http://localhost:3000/?summary=${summaryEncoded}&events=${eventsBase64}`);
+    const frontendURL = process.env.FRONTEND_URL || "http://localhost:3000";
+    res.redirect(`${frontendURL}/?summary=${summaryEncoded}&events=${eventsBase64}`);
   } catch (err) {
     console.error("❌ OAuth or Summary Error:", err.message);
     res.status(500).send("❌ Authentication or Event Fetch Failed");
@@ -243,5 +243,5 @@ app.post("/search-similar-events", async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
